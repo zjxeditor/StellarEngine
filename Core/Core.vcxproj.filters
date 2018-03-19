@@ -28,10 +28,46 @@
     <ClInclude Include="Source\pch.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Math\Common.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Scalar.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Vector.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Quaternion.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Matrix3.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Transform.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Matrix4.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Random.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\d3dx12.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\VectorMath.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\BoundingPlane.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\pch.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Random.cpp">
+      <Filter>Source\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
