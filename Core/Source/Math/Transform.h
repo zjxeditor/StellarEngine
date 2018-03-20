@@ -100,7 +100,7 @@ namespace Math
 		Vector3 m_translation;
 	};
 
-	// inline functions.
+	// Inline methods.
 	INLINE OrthogonalTransform Invert(const OrthogonalTransform& xform) { return ~xform; }
 	// This specialized matrix invert assumes that the 3x3 matrix is orthogonal (and normalized).
 	INLINE AffineTransform OrthoInvert(const AffineTransform& xform)

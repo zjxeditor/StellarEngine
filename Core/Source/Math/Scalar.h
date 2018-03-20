@@ -25,7 +25,7 @@ namespace Math
 		DirectX::XMVECTOR m_vec;
 	};
 
-	// inline functions.
+	// Inline methods.
 	INLINE Scalar operator- (Scalar s) { return Scalar(DirectX::XMVectorNegate(s)); }
 	INLINE Scalar operator+ (Scalar s1, Scalar s2) { return Scalar(DirectX::XMVectorAdd(s1, s2)); }
 	INLINE Scalar operator- (Scalar s1, Scalar s2) { return Scalar(DirectX::XMVectorSubtract(s1, s2)); }

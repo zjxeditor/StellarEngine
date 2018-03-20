@@ -159,6 +159,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Math\Frustum.cpp" />
     <ClCompile Include="Source\Math\Random.cpp" />
     <ClCompile Include="Source\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -167,7 +168,9 @@
   <ItemGroup>
     <ClInclude Include="Source\Graphics\d3dx12.h" />
     <ClInclude Include="Source\Math\BoundingPlane.h" />
+    <ClInclude Include="Source\Math\BoundingSphere.h" />
     <ClInclude Include="Source\Math\Common.h" />
+    <ClInclude Include="Source\Math\Frustum.h" />
     <ClInclude Include="Source\Math\Matrix3.h" />
     <ClInclude Include="Source\Math\Matrix4.h" />
     <ClInclude Include="Source\Math\Quaternion.h" />

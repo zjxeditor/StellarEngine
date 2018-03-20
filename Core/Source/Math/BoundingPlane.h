@@ -32,7 +32,7 @@ namespace Math
 		// Distance from homogeneous point.
 		Scalar DistanceFromPoint(Vector4 point) const { return Dot(point, m_repr); }
 
-		// Most efficient way to transform a plane.  (Involves one quaternion-vector rotation and one dot product.)
+		// Most efficient way to transform a plane. (Involves one quaternion-vector rotation and one dot product.)
 		friend BoundingPlane operator* (const OrthogonalTransform& xform, BoundingPlane plane)
 		{
 			Vector3 normalToPlane = xform.GetRotation() * plane.GetNormal();
@@ -50,19 +50,15 @@ namespace Math
 		Vector4 m_repr;
 	};
 
-	//=======================================================================================================
-	// Inline implementations
-	//
+	// Inline methods.
 	inline BoundingPlane::BoundingPlane(Vector3 pointOnPlane, Vector3 normalToPlane)
 	{
-		// Guarantee a normal.  This constructor isn't meant to be called frequently, but if it is, we can change this.
+		// Guarantee a normal. This constructor isn't meant to be called frequently, but if it is, we can change this.
 		normalToPlane = Normalize(normalToPlane);
 		m_repr = Vector4(normalToPlane, -Dot(pointOnPlane, normalToPlane));
 	}
 
-	//=======================================================================================================
 	// Functions operating on planes
-	//
 	inline BoundingPlane PlaneFromPointsCCW(Vector3 A, Vector3 B, Vector3 C)
 	{
 		return BoundingPlane(A, Cross(B - A, C - A));

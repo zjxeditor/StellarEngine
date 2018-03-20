@@ -64,7 +64,7 @@ namespace Math
 		DirectX::XMMATRIX m_mat;
 	};
 
-	// inline functions.
+	// Inline methods.
 	INLINE Matrix4 Transpose(const Matrix4& mat) { return Matrix4(DirectX::XMMatrixTranspose(mat)); }
 	INLINE Matrix4 Invert(const Matrix4& mat) { return Matrix4(DirectX::XMMatrixInverse(nullptr, mat)); }
 	INLINE Matrix4 OrthoInvert(const Matrix4& xform)

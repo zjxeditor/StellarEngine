@@ -127,7 +127,7 @@ namespace Math
 		DirectX::XMVECTOR m_vec;
 	};
 
-	// inline functions.
+	// Inline methods.
 	INLINE Scalar Length(Vector3 v) { return Scalar(DirectX::XMVector3Length(v)); }
 	INLINE Scalar LengthSquare(Vector3 v) { return Scalar(DirectX::XMVector3LengthSq(v)); }
 	INLINE Scalar LengthRecip(Vector3 v) { return Scalar(DirectX::XMVector3ReciprocalLength(v)); }

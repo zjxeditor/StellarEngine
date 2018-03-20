@@ -33,7 +33,7 @@ namespace Math
 		DirectX::XMVECTOR m_vec;
 	};
 
-	// inline functions.
+	// Inline methods.
 	INLINE Quaternion Normalize(Quaternion q) { return Quaternion(DirectX::XMQuaternionNormalize(q)); }
 
 }	// namespace Math

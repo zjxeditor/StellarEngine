@@ -43,7 +43,7 @@ namespace Math
 		Vector3 m_mat[3];
 	};
 
-	// inline functions.
+	// Inline methods.
 	INLINE Matrix3 Transpose(const Matrix3& mat) { return Matrix3(DirectX::XMMatrixTranspose(mat)); }
 	// inline Matrix3 Inverse( const Matrix3& mat ) { TBD }
 
