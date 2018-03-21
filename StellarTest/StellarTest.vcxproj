@@ -16,10 +16,10 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{5E54BB43-19C0-4DA8-9936-9A7976E73015}</ProjectGuid>
+    <ProjectGuid>{1BA38809-8838-4BC8-B25E-FE46DAFEFAFE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>Core</ProjectName>
-    <RootNamespace>Core</RootNamespace>
+    <ProjectName>StellarTest</ProjectName>
+    <RootNamespace>StellarTest</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <ApplicationEnvironment>title</ApplicationEnvironment>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
@@ -27,12 +27,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'" Label="PropertySheets">
@@ -46,7 +47,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
     <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
@@ -80,10 +81,6 @@
       <OptimizeReferences>false</OptimizeReferences>
       <UACExecutionLevel>AsInvoker</UACExecutionLevel>
     </Link>
-    <FxCompile>
-      <EnableDebuggingInformation>true</EnableDebuggingInformation>
-      <DisableOptimizations>false</DisableOptimizations>
-    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
     <ClCompile>
@@ -99,10 +96,6 @@
       <OptimizeReferences>false</OptimizeReferences>
       <UACExecutionLevel>AsInvoker</UACExecutionLevel>
     </Link>
-    <FxCompile>
-      <EnableDebuggingInformation>true</EnableDebuggingInformation>
-      <DisableOptimizations>false</DisableOptimizations>
-    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -117,15 +110,9 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
-    <FxCompile>
-      <EnableDebuggingInformation>false</EnableDebuggingInformation>
-      <DisableOptimizations>false</DisableOptimizations>
-    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PreprocessorDefinitions>_WIN32;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
@@ -136,8 +123,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>d3d11.lib;dxguid.lib;winmm.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
       <LargeAddressAware>true</LargeAddressAware>
@@ -150,60 +136,21 @@
     <Lib>
       <AdditionalOptions>/IGNORE:4221 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
-    <FxCompile>
-      <ShaderType>Compute</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <VariableName>g_p%(Filename)</VariableName>
-      <HeaderFileOutput>$(SolutionDir)\Build\$(Platform)\$(Configuration)\Output\$(ProjectName)\CompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput>$(SolutionDir)\Build\$(Platform)\$(Configuration)\Output\$(ProjectName)\Shaders\%(Filename).cso</ObjectFileOutput>
-    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Graphics\Camera.cpp" />
-    <ClCompile Include="Source\Graphics\Color.cpp" />
-    <ClCompile Include="Source\Math\Frustum.cpp" />
-    <ClCompile Include="Source\Math\Random.cpp" />
-    <ClCompile Include="Source\pch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
+    <ProjectReference Include="..\Core\Core.vcxproj">
+      <Project>{5e54bb43-19c0-4da8-9936-9a7976e73015}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Graphics\Camera.h" />
-    <ClInclude Include="Source\Graphics\Color.h" />
-    <ClInclude Include="Source\Graphics\d3dx12.h" />
-    <ClInclude Include="Source\Math\BoundingPlane.h" />
-    <ClInclude Include="Source\Math\BoundingSphere.h" />
-    <ClInclude Include="Source\Math\Common.h" />
-    <ClInclude Include="Source\Math\Frustum.h" />
-    <ClInclude Include="Source\Math\Matrix3.h" />
-    <ClInclude Include="Source\Math\Matrix4.h" />
-    <ClInclude Include="Source\Math\Quaternion.h" />
-    <ClInclude Include="Source\Math\Random.h" />
-    <ClInclude Include="Source\Math\Scalar.h" />
-    <ClInclude Include="Source\Math\Transform.h" />
-    <ClInclude Include="Source\Math\Vector.h" />
-    <ClInclude Include="Source\Math\VectorMath.h" />
-    <ClInclude Include="Source\pch.h" />
-    <ClInclude Include="Source\targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <ClCompile Include="Source\SimpleTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\Packages\zlib-vc140-static-64.1.2.11\lib\native\include;.\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Core\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\Packages\zlib-vc140-static-64.1.2.11\build\native\zlib-vc140-static-64.targets" Condition="Exists('..\Packages\zlib-vc140-static-64.1.2.11\build\native\zlib-vc140-static-64.targets')" />
-    <Import Project="..\Packages\WinPixEventRuntime.1.0.170918004\build\WinPixEventRuntime.targets" Condition="Exists('..\Packages\WinPixEventRuntime.1.0.170918004\build\WinPixEventRuntime.targets')" />
   </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\Packages\zlib-vc140-static-64.1.2.11\build\native\zlib-vc140-static-64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\Packages\zlib-vc140-static-64.1.2.11\build\native\zlib-vc140-static-64.targets'))" />
-    <Error Condition="!Exists('..\Packages\WinPixEventRuntime.1.0.170918004\build\WinPixEventRuntime.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\Packages\WinPixEventRuntime.1.0.170918004\build\WinPixEventRuntime.targets'))" />
-  </Target>
 </Project>
