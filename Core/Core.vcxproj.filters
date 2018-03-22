@@ -85,6 +85,9 @@
     <ClInclude Include="Source\Graphics\CommandAllocatorPool.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphics\CommandListManager.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\pch.cpp">
@@ -112,6 +115,9 @@
       <Filter>Source\Core</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\CommandAllocatorPool.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\CommandListManager.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
   </ItemGroup>

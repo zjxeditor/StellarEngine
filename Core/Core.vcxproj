@@ -165,6 +165,7 @@
     <ClCompile Include="Source\Graphics\Camera.cpp" />
     <ClCompile Include="Source\Graphics\Color.cpp" />
     <ClCompile Include="Source\Graphics\CommandAllocatorPool.cpp" />
+    <ClCompile Include="Source\Graphics\CommandListManager.cpp" />
     <ClCompile Include="Source\Math\Frustum.cpp" />
     <ClCompile Include="Source\Math\Random.cpp" />
     <ClCompile Include="Source\pch.cpp">
@@ -178,6 +179,7 @@
     <ClInclude Include="Source\Graphics\Camera.h" />
     <ClInclude Include="Source\Graphics\Color.h" />
     <ClInclude Include="Source\Graphics\CommandAllocatorPool.h" />
+    <ClInclude Include="Source\Graphics\CommandListManager.h" />
     <ClInclude Include="Source\Graphics\d3dx12.h" />
     <ClInclude Include="Source\Math\BoundingPlane.h" />
     <ClInclude Include="Source\Math\BoundingSphere.h" />
