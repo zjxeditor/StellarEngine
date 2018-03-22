@@ -5,7 +5,7 @@
 #pragma once
 
 #include <DirectXMath.h>
-#include "Math/VectorMath.h"
+#include <Math/VectorMath.h>
 
 namespace Graphics
 {
