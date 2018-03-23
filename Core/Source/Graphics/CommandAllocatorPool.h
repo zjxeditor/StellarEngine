@@ -11,6 +11,7 @@
 
 namespace Graphics
 {
+	// Each CommandQueue owns a CommandAllocatorPool. One CommandAllocator will be request for CommandList's usage.
 	class CommandAllocatorPool
 	{
 	public:

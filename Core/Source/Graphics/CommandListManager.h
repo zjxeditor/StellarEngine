@@ -12,6 +12,7 @@
 
 namespace Graphics
 {
+	// CommandQueue mamanes its own fence and CommandAllocatorPool.
 	class CommandQueue
 	{
 		friend class CommandListManager;
@@ -54,6 +55,7 @@ namespace Graphics
 		HANDLE m_FenceEventHandle;
 	};
 
+	// There will be three CommandQueue: graphic, compute and copy. This class mamages all the CommandQueues and CommandLists.
 	class CommandListManager
 	{
 		friend class CommandContext;
@@ -65,10 +67,9 @@ namespace Graphics
 		void Create(ID3D12Device* pDevice);
 		void Shutdown();
 
-		CommandQueue& GetGraphicsQueue(void) { return m_GraphicsQueue; }
-		CommandQueue& GetComputeQueue(void) { return m_ComputeQueue; }
-		CommandQueue& GetCopyQueue(void) { return m_CopyQueue; }
-
+		CommandQueue& GetGraphicsQueue() { return m_GraphicsQueue; }
+		CommandQueue& GetComputeQueue() { return m_ComputeQueue; }
+		CommandQueue& GetCopyQueue() { return m_CopyQueue; }
 		CommandQueue& GetQueue(D3D12_COMMAND_LIST_TYPE Type = D3D12_COMMAND_LIST_TYPE_DIRECT)
 		{
 			switch (Type)
@@ -78,16 +79,12 @@ namespace Graphics
 			default: return m_GraphicsQueue;
 			}
 		}
-
 		ID3D12CommandQueue* GetCommandQueue()
 		{
 			return m_GraphicsQueue.GetCommandQueue();
 		}
 
-		void CreateNewCommandList(
-			D3D12_COMMAND_LIST_TYPE Type,
-			ID3D12GraphicsCommandList** List,
-			ID3D12CommandAllocator** Allocator);
+		void CreateNewCommandList(D3D12_COMMAND_LIST_TYPE Type, ID3D12GraphicsCommandList** List, ID3D12CommandAllocator** Allocator);
 
 		// Test to see if a fence has already been reached
 		bool IsFenceComplete(uint64_t FenceValue)
@@ -99,7 +96,7 @@ namespace Graphics
 		void WaitForFence(uint64_t FenceValue);
 
 		// The CPU will wait for all command queues to empty (so that the GPU is idle)
-		void IdleGPU(void)
+		void IdleGPU()
 		{
 			m_GraphicsQueue.WaitForIdle();
 			m_ComputeQueue.WaitForIdle();

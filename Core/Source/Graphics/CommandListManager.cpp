@@ -7,7 +7,12 @@
 
 namespace Graphics
 {
+	// Global command manager.
 	extern CommandListManager g_CommandManager;
+
+	//
+	// CommandQueue methods.
+	//
 
 	CommandQueue::CommandQueue(D3D12_COMMAND_LIST_TYPE Type) :
 		m_Type(Type),
@@ -64,25 +69,7 @@ namespace Graphics
 		m_CommandQueue = nullptr;
 	}
 
-	
-
-	uint64_t CommandQueue::ExecuteCommandList(ID3D12CommandList* List)
-	{
-		std::lock_guard<std::mutex> LockGuard(m_FenceMutex);
-
-		ASSERT_SUCCEEDED(((ID3D12GraphicsCommandList*)List)->Close());
-
-		// Kickoff the command list
-		m_CommandQueue->ExecuteCommandLists(1, &List);
-
-		// Signal the next fence value (with the GPU)
-		m_CommandQueue->Signal(m_pFence, m_NextFenceValue);
-
-		// And increment the fence value.  
-		return m_NextFenceValue++;
-	}
-
-	uint64_t CommandQueue::IncrementFence(void)
+	uint64_t CommandQueue::IncrementFence()
 	{
 		std::lock_guard<std::mutex> LockGuard(m_FenceMutex);
 		m_CommandQueue->Signal(m_pFence, m_NextFenceValue);
@@ -117,10 +104,10 @@ namespace Graphics
 		if (IsFenceComplete(FenceValue))
 			return;
 
-		// TODO:  Think about how this might affect a multi-threaded situation.  Suppose thread A
-		// wants to wait for fence 100, then thread B comes along and wants to wait for 99.  If
+		// TODO: Think about how this might affect a multi-threaded situation. Suppose thread A
+		// wants to wait for fence 100, then thread B comes along and wants to wait for 99. If
 		// the fence can only have one event set on completion, then thread B has to wait for 
-		// 100 before it knows 99 is ready.  Maybe insert sequential events?
+		// 100 before it knows 99 is ready. Maybe insert sequential events?
 		{
 			std::lock_guard<std::mutex> LockGuard(m_EventMutex);
 
@@ -130,10 +117,25 @@ namespace Graphics
 		}
 	}
 
+	uint64_t CommandQueue::ExecuteCommandList(ID3D12CommandList* List)
+	{
+		std::lock_guard<std::mutex> LockGuard(m_FenceMutex);
+
+		ASSERT_SUCCEEDED(((ID3D12GraphicsCommandList*)List)->Close());
+
+		// Kickoff the command list
+		m_CommandQueue->ExecuteCommandLists(1, &List);
+
+		// Signal the next fence value (with the GPU)
+		m_CommandQueue->Signal(m_pFence, m_NextFenceValue);
+
+		// And increment the fence value.  
+		return m_NextFenceValue++;
+	}
+
 	ID3D12CommandAllocator* CommandQueue::RequestAllocator()
 	{
 		uint64_t CompletedFence = m_pFence->GetCompletedValue();
-
 		return m_AllocatorPool.RequestAllocator(CompletedFence);
 	}
 
@@ -142,6 +144,9 @@ namespace Graphics
 		m_AllocatorPool.DiscardAllocator(FenceValue, Allocator);
 	}
 
+	//
+	// CommandListManager methods.
+	//
 
 	CommandListManager::CommandListManager() :
 		m_Device(nullptr),
@@ -156,13 +161,6 @@ namespace Graphics
 		Shutdown();
 	}
 
-	void CommandListManager::Shutdown()
-	{
-		m_GraphicsQueue.Shutdown();
-		m_ComputeQueue.Shutdown();
-		m_CopyQueue.Shutdown();
-	}
-
 	void CommandListManager::Create(ID3D12Device* pDevice)
 	{
 		ASSERT(pDevice != nullptr);
@@ -172,6 +170,13 @@ namespace Graphics
 		m_GraphicsQueue.Create(pDevice);
 		m_ComputeQueue.Create(pDevice);
 		m_CopyQueue.Create(pDevice);
+	}
+
+	void CommandListManager::Shutdown()
+	{
+		m_GraphicsQueue.Shutdown();
+		m_ComputeQueue.Shutdown();
+		m_CopyQueue.Shutdown();
 	}
 
 	void CommandListManager::CreateNewCommandList(D3D12_COMMAND_LIST_TYPE Type, ID3D12GraphicsCommandList** List, ID3D12CommandAllocator** Allocator)
