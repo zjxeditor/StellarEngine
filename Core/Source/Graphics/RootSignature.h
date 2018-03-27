@@ -85,6 +85,7 @@ namespace Graphics
 		D3D12_ROOT_PARAMETER m_RootParam;
 	};
 
+	// Wrapper class for root signature.
 	// Maximum 64 DWORDS divied up amongst all root parameters.
 	// Root constants = 1 DWORD * NumConstants.
 	// Root descriptor (CBV, SRV, or UAV) = 2 DWORDs each.
