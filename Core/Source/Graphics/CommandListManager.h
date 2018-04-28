@@ -10,105 +10,98 @@
 #include <stdint.h>
 #include "CommandAllocatorPool.h"
 
-namespace Graphics
-{
-	// CommandQueue mamanes its own fence and CommandAllocatorPool.
-	class CommandQueue
-	{
-		friend class CommandListManager;
-		friend class CommandContext;
+namespace Graphics {
 
-	public:
-		CommandQueue(D3D12_COMMAND_LIST_TYPE Type);
-		~CommandQueue();
+// CommandQueue mamanes its own fence and CommandAllocatorPool.
+class CommandQueue {
+	friend class CommandListManager;
+	friend class CommandContext;
 
-		void Create(ID3D12Device* pDevice);
-		void Shutdown();
-		bool IsReady() { return m_CommandQueue != nullptr; }
+public:
+	CommandQueue(D3D12_COMMAND_LIST_TYPE Type);
+	~CommandQueue();
 
-		uint64_t IncrementFence();
-		bool IsFenceComplete(uint64_t FenceValue);
-		void StallForFence(uint64_t FenceValue);
-		void StallForProducer(CommandQueue& Producer);
-		void WaitForFence(uint64_t FenceValue);
-		void WaitForIdle() { WaitForFence(IncrementFence()); }
+	void Create(ID3D12Device* pDevice);
+	void Shutdown();
+	bool IsReady() { return m_CommandQueue != nullptr; }
 
-		ID3D12CommandQueue* GetCommandQueue() { return m_CommandQueue; }
-		uint64_t GetNextFenceValue() { return m_NextFenceValue; }
+	uint64_t IncrementFence();
+	bool IsFenceComplete(uint64_t FenceValue);
+	void StallForFence(uint64_t FenceValue);
+	void StallForProducer(CommandQueue& Producer);
+	void WaitForFence(uint64_t FenceValue);
+	void WaitForIdle() { WaitForFence(IncrementFence()); }
 
-	private:
-		uint64_t ExecuteCommandList(ID3D12CommandList* List);
-		ID3D12CommandAllocator* RequestAllocator();
-		void DiscardAllocator(uint64_t FenceValueForReset, ID3D12CommandAllocator* Allocator);
+	ID3D12CommandQueue* GetCommandQueue() { return m_CommandQueue; }
+	uint64_t GetNextFenceValue() { return m_NextFenceValue; }
 
-		const D3D12_COMMAND_LIST_TYPE m_Type;
-		ID3D12CommandQueue* m_CommandQueue;
-		CommandAllocatorPool m_AllocatorPool;
-		
-		std::mutex m_FenceMutex;
-		std::mutex m_EventMutex;
+private:
+	uint64_t ExecuteCommandList(ID3D12CommandList* List);
+	ID3D12CommandAllocator* RequestAllocator();
+	void DiscardAllocator(uint64_t FenceValueForReset, ID3D12CommandAllocator* Allocator);
 
-		// Lifetime of these objects is managed by the descriptor cache.
-		ID3D12Fence* m_pFence;
-		uint64_t m_NextFenceValue;
-		uint64_t m_LastCompletedFenceValue;
-		HANDLE m_FenceEventHandle;
-	};
+	const D3D12_COMMAND_LIST_TYPE m_Type;
+	ID3D12CommandQueue* m_CommandQueue;
+	CommandAllocatorPool m_AllocatorPool;
 
-	// There will be three CommandQueue: graphic, compute and copy. This class mamages all the CommandQueues and CommandLists.
-	class CommandListManager
-	{
-		friend class CommandContext;
+	std::mutex m_FenceMutex;
+	std::mutex m_EventMutex;
 
-	public:
-		CommandListManager();
-		~CommandListManager();
+	// Lifetime of these objects is managed by the descriptor cache.
+	ID3D12Fence* m_pFence;
+	uint64_t m_NextFenceValue;
+	uint64_t m_LastCompletedFenceValue;
+	HANDLE m_FenceEventHandle;
+};
 
-		void Create(ID3D12Device* pDevice);
-		void Shutdown();
+// There will be three CommandQueue: graphic, compute and copy. This class mamages all the CommandQueues and CommandLists.
+class CommandListManager {
+	friend class CommandContext;
 
-		CommandQueue& GetGraphicsQueue() { return m_GraphicsQueue; }
-		CommandQueue& GetComputeQueue() { return m_ComputeQueue; }
-		CommandQueue& GetCopyQueue() { return m_CopyQueue; }
-		CommandQueue& GetQueue(D3D12_COMMAND_LIST_TYPE Type = D3D12_COMMAND_LIST_TYPE_DIRECT)
-		{
-			switch (Type)
-			{
-			case D3D12_COMMAND_LIST_TYPE_COMPUTE: return m_ComputeQueue;
-			case D3D12_COMMAND_LIST_TYPE_COPY: return m_CopyQueue;
-			default: return m_GraphicsQueue;
-			}
+public:
+	CommandListManager();
+	~CommandListManager();
+
+	void Create(ID3D12Device* pDevice);
+	void Shutdown();
+
+	CommandQueue& GetGraphicsQueue() { return m_GraphicsQueue; }
+	CommandQueue& GetComputeQueue() { return m_ComputeQueue; }
+	CommandQueue& GetCopyQueue() { return m_CopyQueue; }
+	CommandQueue& GetQueue(D3D12_COMMAND_LIST_TYPE Type = D3D12_COMMAND_LIST_TYPE_DIRECT) {
+		switch (Type) {
+		case D3D12_COMMAND_LIST_TYPE_COMPUTE: return m_ComputeQueue;
+		case D3D12_COMMAND_LIST_TYPE_COPY: return m_CopyQueue;
+		default: return m_GraphicsQueue;
 		}
-		ID3D12CommandQueue* GetCommandQueue()
-		{
-			return m_GraphicsQueue.GetCommandQueue();
-		}
+	}
+	ID3D12CommandQueue* GetCommandQueue() {
+		return m_GraphicsQueue.GetCommandQueue();
+	}
 
-		void CreateNewCommandList(D3D12_COMMAND_LIST_TYPE Type, ID3D12GraphicsCommandList** List, ID3D12CommandAllocator** Allocator);
+	void CreateNewCommandList(D3D12_COMMAND_LIST_TYPE Type, ID3D12GraphicsCommandList** List, ID3D12CommandAllocator** Allocator);
 
-		// Test to see if a fence has already been reached
-		bool IsFenceComplete(uint64_t FenceValue)
-		{
-			return GetQueue(D3D12_COMMAND_LIST_TYPE(FenceValue >> 56)).IsFenceComplete(FenceValue);
-		}
+	// Test to see if a fence has already been reached
+	bool IsFenceComplete(uint64_t FenceValue) {
+		return GetQueue(D3D12_COMMAND_LIST_TYPE(FenceValue >> 56)).IsFenceComplete(FenceValue);
+	}
 
-		// The CPU will wait for a fence to reach a specified value
-		void WaitForFence(uint64_t FenceValue);
+	// The CPU will wait for a fence to reach a specified value
+	void WaitForFence(uint64_t FenceValue);
 
-		// The CPU will wait for all command queues to empty (so that the GPU is idle)
-		void IdleGPU()
-		{
-			m_GraphicsQueue.WaitForIdle();
-			m_ComputeQueue.WaitForIdle();
-			m_CopyQueue.WaitForIdle();
-		}
+	// The CPU will wait for all command queues to empty (so that the GPU is idle)
+	void IdleGPU() {
+		m_GraphicsQueue.WaitForIdle();
+		m_ComputeQueue.WaitForIdle();
+		m_CopyQueue.WaitForIdle();
+	}
 
-	private:
-		ID3D12Device * m_Device;
+private:
+	ID3D12Device * m_Device;
 
-		CommandQueue m_GraphicsQueue;
-		CommandQueue m_ComputeQueue;
-		CommandQueue m_CopyQueue;
-	};
+	CommandQueue m_GraphicsQueue;
+	CommandQueue m_ComputeQueue;
+	CommandQueue m_CopyQueue;
+};
 
 }	// namespace Graphics

@@ -5,8 +5,8 @@
 #include "pch.h"
 #include "Random.h"
 
-namespace Math
-{
-	RandomNumberGenerator g_RNG;
+namespace Math {
+
+RandomNumberGenerator g_RNG;
 
 }	// namespace Math

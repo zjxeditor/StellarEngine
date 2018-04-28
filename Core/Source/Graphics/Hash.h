@@ -1,5 +1,5 @@
 //
-//
+// Hash utility.
 //
 
 #pragma once

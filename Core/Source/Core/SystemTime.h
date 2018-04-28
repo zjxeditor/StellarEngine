@@ -4,78 +4,67 @@
 
 #pragma once
 
-namespace Core
-{
-	class SystemTime
-	{
-	public:
-		// Query the performance counter frequency.
-		static void Initialize(void);
+namespace Core {
 
-		// Query the current value of the performance counter.
-		static int64_t GetCurrentTick(void);
+class SystemTime {
+public:
+	// Query the performance counter frequency.
+	static void Initialize();
 
-		static void BusyLoopSleep(float SleepTime);
+	// Query the current value of the performance counter.
+	static int64_t GetCurrentTick();
 
-		static double TicksToSeconds(int64_t TickCount)
-		{
-			return TickCount * sm_CpuTickDelta;
-		}
+	static void BusyLoopSleep(float SleepTime);
 
-		static double TicksToMillisecs(int64_t TickCount)
-		{
-			return TickCount * sm_CpuTickDelta * 1000.0;
-		}
+	static double TicksToSeconds(int64_t TickCount) {
+		return TickCount * sm_CpuTickDelta;
+	}
 
-		static double TimeBetweenTicks(int64_t tick1, int64_t tick2)
-		{
-			return TicksToSeconds(tick2 - tick1);
-		}
+	static double TicksToMillisecs(int64_t TickCount) {
+		return TickCount * sm_CpuTickDelta * 1000.0;
+	}
 
-	private:
-		// The amount of time that elapses between ticks of the performance counter
-		static double sm_CpuTickDelta;
-	};
+	static double TimeBetweenTicks(int64_t tick1, int64_t tick2) {
+		return TicksToSeconds(tick2 - tick1);
+	}
+
+private:
+	// The amount of time that elapses between ticks of the performance counter
+	static double sm_CpuTickDelta;
+};
 
 
-	class CpuTimer
-	{
-	public:
-		CpuTimer()
-		{
-			m_StartTick = 0ll;
-			m_ElapsedTicks = 0ll;
-		}
+class CpuTimer {
+public:
+	CpuTimer() {
+		m_StartTick = 0ll;
+		m_ElapsedTicks = 0ll;
+	}
 
-		void Start()
-		{
-			if (m_StartTick == 0ll)
-				m_StartTick = SystemTime::GetCurrentTick();
-		}
+	void Start() {
+		if (m_StartTick == 0ll)
+			m_StartTick = SystemTime::GetCurrentTick();
+	}
 
-		void Stop()
-		{
-			if (m_StartTick != 0ll)
-			{
-				m_ElapsedTicks += SystemTime::GetCurrentTick() - m_StartTick;
-				m_StartTick = 0ll;
-			}
-		}
-
-		void Reset()
-		{
-			m_ElapsedTicks = 0ll;
+	void Stop() {
+		if (m_StartTick != 0ll) {
+			m_ElapsedTicks += SystemTime::GetCurrentTick() - m_StartTick;
 			m_StartTick = 0ll;
 		}
+	}
 
-		double GetTime() const
-		{
-			return SystemTime::TicksToSeconds(m_ElapsedTicks);
-		}
+	void Reset() {
+		m_ElapsedTicks = 0ll;
+		m_StartTick = 0ll;
+	}
 
-	private:
-		int64_t m_StartTick;
-		int64_t m_ElapsedTicks;
-	};
+	double GetTime() const {
+		return SystemTime::TicksToSeconds(m_ElapsedTicks);
+	}
+
+private:
+	int64_t m_StartTick;
+	int64_t m_ElapsedTicks;
+};
 
 }	// namespace Core

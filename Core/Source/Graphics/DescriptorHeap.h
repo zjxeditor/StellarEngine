@@ -9,113 +9,103 @@
 #include <queue>
 #include <string>
 
-namespace Graphics
-{
-	// This is an unbounded resource descriptor allocator. It is intended to provide space for CPU-visible resource descriptors
-	// as resources are created. For those that need to be made shader-visible, they will need to be copied to a UserDescriptorHeap
-	// or a DynamicDescriptorHeap.
-	class DescriptorAllocator
-	{
-	public:
-		DescriptorAllocator(D3D12_DESCRIPTOR_HEAP_TYPE Type) : m_Type(Type), m_CurrentHeap(nullptr) {}
+namespace Graphics {
 
-		D3D12_CPU_DESCRIPTOR_HANDLE Allocate(uint32_t Count);
+// This is an unbounded resource descriptor allocator. It is intended to provide space for CPU-visible resource descriptors
+// as resources are created. For those that need to be made shader-visible, they will need to be copied to a UserDescriptorHeap
+// or a DynamicDescriptorHeap.
+class DescriptorAllocator {
+public:
+	DescriptorAllocator(D3D12_DESCRIPTOR_HEAP_TYPE Type) : m_Type(Type), m_CurrentHeap(nullptr) {}
 
-		static void DestroyAll();
+	D3D12_CPU_DESCRIPTOR_HANDLE Allocate(uint32_t Count);
 
-	protected:
-		static ID3D12DescriptorHeap* RequestNewHeap(D3D12_DESCRIPTOR_HEAP_TYPE Type);
+	static void DestroyAll();
 
-		static const uint32_t sm_NumDescriptorsPerHeap = 256;
-		static std::mutex sm_AllocationMutex;
-		static std::vector<Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> sm_DescriptorHeapPool;
+protected:
+	static ID3D12DescriptorHeap* RequestNewHeap(D3D12_DESCRIPTOR_HEAP_TYPE Type);
 
-		D3D12_DESCRIPTOR_HEAP_TYPE m_Type;
-		ID3D12DescriptorHeap* m_CurrentHeap;
-		D3D12_CPU_DESCRIPTOR_HANDLE m_CurrentHandle;
-		uint32_t m_DescriptorSize;
-		uint32_t m_RemainingFreeHandles;
-	};
+	static const uint32_t sm_NumDescriptorsPerHeap = 256;
+	static std::mutex sm_AllocationMutex;
+	static std::vector<Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> sm_DescriptorHeapPool;
 
-	// Wrapper class for GPU and CPU descriptor handles.
-	class DescriptorHandle
-	{
-	public:
-		DescriptorHandle()
-		{
-			m_CpuHandle.ptr = D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN;
-			m_GpuHandle.ptr = D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN;
-		}
+	D3D12_DESCRIPTOR_HEAP_TYPE m_Type;
+	ID3D12DescriptorHeap* m_CurrentHeap;
+	D3D12_CPU_DESCRIPTOR_HANDLE m_CurrentHandle;
+	uint32_t m_DescriptorSize;
+	uint32_t m_RemainingFreeHandles;
+};
 
-		DescriptorHandle(D3D12_CPU_DESCRIPTOR_HANDLE CpuHandle)
-			: m_CpuHandle(CpuHandle)
-		{
-			m_GpuHandle.ptr = D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN;
-		}
+// Wrapper class for GPU and CPU descriptor handles.
+class DescriptorHandle {
+public:
+	DescriptorHandle() {
+		m_CpuHandle.ptr = D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN;
+		m_GpuHandle.ptr = D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN;
+	}
 
-		DescriptorHandle(D3D12_CPU_DESCRIPTOR_HANDLE CpuHandle, D3D12_GPU_DESCRIPTOR_HANDLE GpuHandle)
-			: m_CpuHandle(CpuHandle), m_GpuHandle(GpuHandle)
-		{
-		}
+	DescriptorHandle(D3D12_CPU_DESCRIPTOR_HANDLE CpuHandle)
+		: m_CpuHandle(CpuHandle) {
+		m_GpuHandle.ptr = D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN;
+	}
 
-		DescriptorHandle operator+ (INT OffsetScaledByDescriptorSize) const
-		{
-			DescriptorHandle ret = *this;
-			ret += OffsetScaledByDescriptorSize;
-			return ret;
-		}
+	DescriptorHandle(D3D12_CPU_DESCRIPTOR_HANDLE CpuHandle, D3D12_GPU_DESCRIPTOR_HANDLE GpuHandle)
+		: m_CpuHandle(CpuHandle), m_GpuHandle(GpuHandle) {}
 
-		void operator += (INT OffsetScaledByDescriptorSize)
-		{
-			if (m_CpuHandle.ptr != D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN)
-				m_CpuHandle.ptr += OffsetScaledByDescriptorSize;
-			if (m_GpuHandle.ptr != D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN)
-				m_GpuHandle.ptr += OffsetScaledByDescriptorSize;
-		}
+	DescriptorHandle operator+ (INT OffsetScaledByDescriptorSize) const {
+		DescriptorHandle ret = *this;
+		ret += OffsetScaledByDescriptorSize;
+		return ret;
+	}
 
-		D3D12_CPU_DESCRIPTOR_HANDLE GetCpuHandle() const { return m_CpuHandle; }
+	void operator += (INT OffsetScaledByDescriptorSize) {
+		if (m_CpuHandle.ptr != D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN)
+			m_CpuHandle.ptr += OffsetScaledByDescriptorSize;
+		if (m_GpuHandle.ptr != D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN)
+			m_GpuHandle.ptr += OffsetScaledByDescriptorSize;
+	}
 
-		D3D12_GPU_DESCRIPTOR_HANDLE GetGpuHandle() const { return m_GpuHandle; }
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCpuHandle() const { return m_CpuHandle; }
 
-		bool IsNull() const { return m_CpuHandle.ptr == D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN; }
-		bool IsShaderVisible() const { return m_GpuHandle.ptr != D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN; }
+	D3D12_GPU_DESCRIPTOR_HANDLE GetGpuHandle() const { return m_GpuHandle; }
 
-	private:
-		D3D12_CPU_DESCRIPTOR_HANDLE m_CpuHandle;
-		D3D12_GPU_DESCRIPTOR_HANDLE m_GpuHandle;
-	};
+	bool IsNull() const { return m_CpuHandle.ptr == D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN; }
+	bool IsShaderVisible() const { return m_GpuHandle.ptr != D3D12_GPU_VIRTUAL_ADDRESS_UNKNOWN; }
 
-	// Normal descriptor heap used for CPU and GPU.
-	class UserDescriptorHeap
-	{
-	public:
-		UserDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE Type, uint32_t MaxCount)
-		{
-			m_HeapDesc.Type = Type;
-			m_HeapDesc.NumDescriptors = MaxCount;
-			m_HeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-			m_HeapDesc.NodeMask = 1;
-		}
+private:
+	D3D12_CPU_DESCRIPTOR_HANDLE m_CpuHandle;
+	D3D12_GPU_DESCRIPTOR_HANDLE m_GpuHandle;
+};
 
-		void Create(const std::wstring& DebugHeapName);
+// Normal descriptor heap used for CPU and GPU.
+class UserDescriptorHeap {
+public:
+	UserDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE Type, uint32_t MaxCount) {
+		m_HeapDesc.Type = Type;
+		m_HeapDesc.NumDescriptors = MaxCount;
+		m_HeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+		m_HeapDesc.NodeMask = 1;
+	}
 
-		bool HasAvailableSpace(uint32_t Count) const { return Count <= m_NumFreeDescriptors; }
+	void Create(const std::wstring& DebugHeapName);
 
-		DescriptorHandle Alloc(uint32_t Count = 1);
+	bool HasAvailableSpace(uint32_t Count) const { return Count <= m_NumFreeDescriptors; }
 
-		DescriptorHandle GetHandleAtOffset(uint32_t Offset) const { return m_FirstHandle + Offset * m_DescriptorSize; }
+	DescriptorHandle Alloc(uint32_t Count = 1);
 
-		bool ValidateHandle(const DescriptorHandle& DHandle) const;
+	DescriptorHandle GetHandleAtOffset(uint32_t Offset) const { return m_FirstHandle + Offset * m_DescriptorSize; }
 
-		ID3D12DescriptorHeap* GetHeapPointer() const { return m_Heap.Get(); }
+	bool ValidateHandle(const DescriptorHandle& DHandle) const;
 
-	private:
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_Heap;
-		D3D12_DESCRIPTOR_HEAP_DESC m_HeapDesc;
-		uint32_t m_DescriptorSize;
-		uint32_t m_NumFreeDescriptors;
-		DescriptorHandle m_FirstHandle;
-		DescriptorHandle m_NextFreeHandle;
-	};
+	ID3D12DescriptorHeap* GetHeapPointer() const { return m_Heap.Get(); }
+
+private:
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_Heap;
+	D3D12_DESCRIPTOR_HEAP_DESC m_HeapDesc;
+	uint32_t m_DescriptorSize;
+	uint32_t m_NumFreeDescriptors;
+	DescriptorHandle m_FirstHandle;
+	DescriptorHandle m_NextFreeHandle;
+};
 
 }	// namespace Graphics

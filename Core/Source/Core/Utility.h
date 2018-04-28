@@ -4,53 +4,47 @@
 
 #pragma once
 
-namespace Core
-{
-	inline void Print(const char* msg) { printf("%s", msg); }
-	inline void Print(const wchar_t* msg) { wprintf(L"%ws", msg); }
+namespace Core {
 
-	inline void Printf(const char* format, ...)
-	{
-		char buffer[256];
-		va_list ap;
-		va_start(ap, format);
-		vsprintf_s(buffer, 256, format, ap);
-		Print(buffer);
-	}
+inline void Print(const char* msg) { printf("%s", msg); }
+inline void Print(const wchar_t* msg) { wprintf(L"%ws", msg); }
 
-	inline void Printf(const wchar_t* format, ...)
-	{
-		wchar_t buffer[256];
-		va_list ap;
-		va_start(ap, format);
-		vswprintf(buffer, 256, format, ap);
-		Print(buffer);
-	}
+inline void Printf(const char* format, ...) {
+	char buffer[256];
+	va_list ap;
+	va_start(ap, format);
+	vsprintf_s(buffer, 256, format, ap);
+	Print(buffer);
+}
+
+inline void Printf(const wchar_t* format, ...) {
+	wchar_t buffer[256];
+	va_list ap;
+	va_start(ap, format);
+	vswprintf(buffer, 256, format, ap);
+	Print(buffer);
+}
 
 #ifndef RELEASE
-	inline void PrintSubMessage(const char* format, ...)
-	{
-		Print("--> ");
-		char buffer[256];
-		va_list ap;
-		va_start(ap, format);
-		vsprintf_s(buffer, 256, format, ap);
-		Print(buffer);
-		Print("\n");
-	}
-	inline void PrintSubMessage(const wchar_t* format, ...)
-	{
-		Print("--> ");
-		wchar_t buffer[256];
-		va_list ap;
-		va_start(ap, format);
-		vswprintf(buffer, 256, format, ap);
-		Print(buffer);
-		Print("\n");
-	}
-	inline void PrintSubMessage(void)
-	{
-	}
+inline void PrintSubMessage(const char* format, ...) {
+	Print("--> ");
+	char buffer[256];
+	va_list ap;
+	va_start(ap, format);
+	vsprintf_s(buffer, 256, format, ap);
+	Print(buffer);
+	Print("\n");
+}
+inline void PrintSubMessage(const wchar_t* format, ...) {
+	Print("--> ");
+	wchar_t buffer[256];
+	va_list ap;
+	va_start(ap, format);
+	vswprintf(buffer, 256, format, ap);
+	Print(buffer);
+	Print("\n");
+}
+inline void PrintSubMessage() {}
 #endif
 
 #ifdef ERROR
@@ -122,9 +116,9 @@ namespace Core
 
 #define BreakIfFailed( hr ) if (FAILED(hr)) __debugbreak()
 
-	void SIMDMemCopy(void* __restrict Dest, const void* __restrict Source, size_t NumQuadwords);
-	void SIMDMemFill(void* __restrict Dest, __m128 FillVector, size_t NumQuadwords);
+void SIMDMemCopy(void* __restrict Dest, const void* __restrict Source, size_t NumQuadwords);
+void SIMDMemFill(void* __restrict Dest, __m128 FillVector, size_t NumQuadwords);
 
-	std::wstring MakeWStr(const std::string& str);
+std::wstring MakeWStr(const std::string& str);
 
 }	// namespace Core

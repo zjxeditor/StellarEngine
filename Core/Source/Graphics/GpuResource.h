@@ -28,8 +28,7 @@ namespace Graphics
 			m_pResource(pResource),
 			m_UsageState(CurrentState),
 			m_TransitioningState((D3D12_RESOURCE_STATES)-1)
-		{
-		}
+		{}
 
 		virtual void Destroy()
 		{
