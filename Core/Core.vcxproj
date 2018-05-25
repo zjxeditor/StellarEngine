@@ -175,6 +175,8 @@
     <ClCompile Include="Source\Graphics\GpuBuffer.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsCore.cpp" />
     <ClCompile Include="Source\Graphics\LinearAllocator.cpp" />
+    <ClCompile Include="Source\Graphics\PixelBuffer.cpp" />
+    <ClCompile Include="Source\Graphics\ReadbackBuffer.cpp" />
     <ClCompile Include="Source\Graphics\RootSignature.cpp" />
     <ClCompile Include="Source\Math\Frustum.cpp" />
     <ClCompile Include="Source\Math\Random.cpp" />
@@ -202,6 +204,8 @@
     <ClInclude Include="Source\Graphics\GraphicsCore.h" />
     <ClInclude Include="Source\Graphics\Hash.h" />
     <ClInclude Include="Source\Graphics\LinearAllocator.h" />
+    <ClInclude Include="Source\Graphics\PixelBuffer.h" />
+    <ClInclude Include="Source\Graphics\ReadbackBuffer.h" />
     <ClInclude Include="Source\Graphics\RootSignature.h" />
     <ClInclude Include="Source\Math\BoundingPlane.h" />
     <ClInclude Include="Source\Math\BoundingSphere.h" />

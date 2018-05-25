@@ -5,8 +5,10 @@
 #pragma once
 
 #include "CommandListManager.h"
+#include "Color.h"
 #include "RootSignature.h"
 #include "GpuBuffer.h"
+#include "PixelBuffer.h"
 #include "DynamicDescriptorHeap.h"
 #include "LinearAllocator.h"
 
@@ -18,6 +20,7 @@ namespace Graphics {
 class CommandContext;
 class GraphicsContext;
 class ComputeContext;
+class PixelBuffer;
 
 struct DWParam {
 	DWParam(FLOAT f) : Float(f) {}
@@ -118,8 +121,7 @@ public:
 	static void InitializeTexture(GpuResource& Dest, UINT NumSubresources, D3D12_SUBRESOURCE_DATA SubData[]);
 	static void InitializeBuffer(GpuResource& Dest, const void* Data, size_t NumBytes, size_t Offset = 0);
 	static void InitializeTextureArraySlice(GpuResource& Dest, UINT SliceIndex, GpuResource& Src);
-	// Todo: uncomment to enable read back functionality
-	//static void ReadbackTexture2D(GpuResource& ReadbackBuffer, PixelBuffer& SrcBuffer);
+	static void ReadbackTexture2D(GpuResource& ReadbackBuffer, PixelBuffer& SrcBuffer);
 
 	void SetDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE Type, ID3D12DescriptorHeap* HeapPtr);
 	void SetDescriptorHeaps(UINT HeapCount, D3D12_DESCRIPTOR_HEAP_TYPE Type[], ID3D12DescriptorHeap* HeapPtrs[]);
