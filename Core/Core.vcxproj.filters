@@ -106,9 +106,6 @@
     <ClInclude Include="Source\Graphics\LinearAllocator.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\BuddyAllocator.h">
-      <Filter>Source\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\GpuBuffer.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
@@ -178,9 +175,6 @@
       <Filter>Source\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\LinearAllocator.cpp">
-      <Filter>Source\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\BuddyAllocator.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\GpuBuffer.cpp">

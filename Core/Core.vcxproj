@@ -162,7 +162,6 @@
     <ClCompile Include="Source\Core\FileUtility.cpp" />
     <ClCompile Include="Source\Core\SystemTime.cpp" />
     <ClCompile Include="Source\Core\Utility.cpp" />
-    <ClCompile Include="Source\Graphics\BuddyAllocator.cpp" />
     <ClCompile Include="Source\Graphics\Camera.cpp" />
     <ClCompile Include="Source\Graphics\Color.cpp" />
     <ClCompile Include="Source\Graphics\ColorBuffer.cpp" />
@@ -190,7 +189,6 @@
     <ClInclude Include="Source\Core\FileUtility.h" />
     <ClInclude Include="Source\Core\SystemTime.h" />
     <ClInclude Include="Source\Core\Utility.h" />
-    <ClInclude Include="Source\Graphics\BuddyAllocator.h" />
     <ClInclude Include="Source\Graphics\Camera.h" />
     <ClInclude Include="Source\Graphics\Color.h" />
     <ClInclude Include="Source\Graphics\ColorBuffer.h" />
