@@ -165,10 +165,12 @@
     <ClCompile Include="Source\Graphics\BuddyAllocator.cpp" />
     <ClCompile Include="Source\Graphics\Camera.cpp" />
     <ClCompile Include="Source\Graphics\Color.cpp" />
+    <ClCompile Include="Source\Graphics\ColorBuffer.cpp" />
     <ClCompile Include="Source\Graphics\CommandAllocatorPool.cpp" />
     <ClCompile Include="Source\Graphics\CommandContext.cpp" />
     <ClCompile Include="Source\Graphics\CommandListManager.cpp" />
     <ClCompile Include="Source\Graphics\CommandSignature.cpp" />
+    <ClCompile Include="Source\Graphics\DepthBuffer.cpp" />
     <ClCompile Include="Source\Graphics\DescriptorHeap.cpp" />
     <ClCompile Include="Source\Graphics\DynamicDescriptorHeap.cpp" />
     <ClCompile Include="Source\Graphics\DynamicUploadBuffer.cpp" />
@@ -191,11 +193,13 @@
     <ClInclude Include="Source\Graphics\BuddyAllocator.h" />
     <ClInclude Include="Source\Graphics\Camera.h" />
     <ClInclude Include="Source\Graphics\Color.h" />
+    <ClInclude Include="Source\Graphics\ColorBuffer.h" />
     <ClInclude Include="Source\Graphics\CommandAllocatorPool.h" />
     <ClInclude Include="Source\Graphics\CommandContext.h" />
     <ClInclude Include="Source\Graphics\CommandListManager.h" />
     <ClInclude Include="Source\Graphics\CommandSignature.h" />
     <ClInclude Include="Source\Graphics\d3dx12.h" />
+    <ClInclude Include="Source\Graphics\DepthBuffer.h" />
     <ClInclude Include="Source\Graphics\DescriptorHeap.h" />
     <ClInclude Include="Source\Graphics\DynamicDescriptorHeap.h" />
     <ClInclude Include="Source\Graphics\DynamicUploadBuffer.h" />
