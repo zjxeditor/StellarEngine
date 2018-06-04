@@ -151,6 +151,9 @@
     <ClInclude Include="Source\Graphics\TextureManager.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphics\GraphicsCommon.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\pch.cpp">
@@ -235,6 +238,9 @@
       <Filter>Source\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\TextureManager.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\GraphicsCommon.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
   </ItemGroup>

@@ -176,6 +176,7 @@
     <ClCompile Include="Source\Graphics\DynamicUploadBuffer.cpp" />
     <ClCompile Include="Source\Graphics\GpuBuffer.cpp" />
     <ClCompile Include="Source\Graphics\GpuTimeManager.cpp" />
+    <ClCompile Include="Source\Graphics\GraphicsCommon.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsCore.cpp" />
     <ClCompile Include="Source\Graphics\LinearAllocator.cpp" />
     <ClCompile Include="Source\Graphics\PipelineState.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Source\Graphics\GpuBuffer.h" />
     <ClInclude Include="Source\Graphics\GpuResource.h" />
     <ClInclude Include="Source\Graphics\GpuTimeManager.h" />
+    <ClInclude Include="Source\Graphics\GraphicsCommon.h" />
     <ClInclude Include="Source\Graphics\GraphicsCore.h" />
     <ClInclude Include="Source\Graphics\Hash.h" />
     <ClInclude Include="Source\Graphics\LinearAllocator.h" />
